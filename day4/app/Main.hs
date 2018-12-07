@@ -21,6 +21,7 @@ main = do
   (filename : _) <- getArgs
   s              <- readFile filename
   print $ solve1 s
+  print $ solve2 s
 
 -- TYPES
 data LogRecord = LogRecord { time :: UTCTime
@@ -92,6 +93,25 @@ solve1 s = mostSleepingGuard * maxMinute
 
   records = sortOn time $ map parseLogRecord $ lines s
 
+solve2 :: String -> Int
+solve2 s = (\(m, g, _) -> m * g) $ maximumBy (\(_, _, i1) (_, _, i2) -> i1 `compare` i2) aggregated
+ where
+
+  guardIDs = Set.fromList (catMaybes $ map (maybeGuardID . action) records)
+
+  aggregated :: [(Int, GuardID, Int)]
+  aggregated = flatten $ Map.assocs
+    $ fmap (Map.assocs . (flip execState Map.empty) . mapM_ aggregateIDsCount)
+    $ (\(_, _, m) -> m)
+    $ execState (mapM_ aggregate records) (undefined, Awaken, Map.empty)
+   where
+     flatten l = do
+       (m, lg) <- l
+       (g, i)  <- lg
+       pure $ (m, g, i)
+
+  records = sortOn time $ map parseLogRecord $ lines s
+
 data ShiftState = SleepingFrom DiffTime | Awaken
 
 aggregate
@@ -115,6 +135,13 @@ aggregate (LogRecord awaken WakesUp) = do
   let m' = foldl alterMap m minutesToUpdate
   put (g, Awaken, m')
 
+aggregateIDsCount 
+  :: MonadState (Map.Map GuardID Int) m
+  => GuardID
+  -> m ()
+aggregateIDsCount g = modify $ Map.alter helper g
+  where helper (Just i) = Just $ i + 1
+        helper Nothing  = Just 1
 
 toMinutes :: DiffTime -> Integer
 toMinutes time =
