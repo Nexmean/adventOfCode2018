@@ -1,51 +1,39 @@
-name:                day9
-version:             0.1.0.0
-github:              "githubuser/day9"
-license:             BSD3
-author:              "Author name here"
-maintainer:          "example@example.com"
-copyright:           "2018 Author name here"
-
-extra-source-files:
-- README.md
-- ChangeLog.md
-
-# Metadata used when publishing your package
-# synopsis:            Short description of your package
-# category:            Web
-
-# To avoid duplicated efforts in documentation and dealing with the
-# complications of embedding Haddock markup inside cabal files, it is
-# common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/githubuser/day9#readme>
-
-dependencies:
-- base >= 4.7 && < 5
-
 library:
   source-dirs: src
-
-executables:
-  day9-exe:
-    main:                Main.hs
-    source-dirs:         app
+tests:
+  day9-test:
+    source-dirs: test
+    main: Spec.hs
     ghc-options:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
+    - day9
+copyright: 2018 Author name here
+maintainer: example@example.com
+dependencies:
+- base >= 4.7 && < 5
+name: day9
+version: 0.1.0.0
+extra-source-files:
+- README.md
+- ChangeLog.md
+author: Author name here
+github: githubuser/day9
+license: BSD3
+executables:
+  day9-exe:
+    source-dirs: app
+    main: Main.hs
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - pointedlist
     - parsec
     - mtl
     - containers
     - day9
-
-tests:
-  day9-test:
-    main:                Spec.hs
-    source-dirs:         test
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    dependencies:
-    - day9
+description: Please see the README on GitHub at <https://github.com/githubuser/day9#readme>
