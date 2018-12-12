@@ -1,0 +1,40 @@
+library:
+  source-dirs: src
+tests:
+  day11-test:
+    source-dirs: test
+    main: Spec.hs
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - day11
+copyright: 2018 Author name here
+maintainer: example@example.com
+dependencies:
+- base >= 4.7 && < 5
+- memoize
+name: day11
+version: 0.1.0.0
+extra-source-files:
+- README.md
+- ChangeLog.md
+author: Author name here
+github: githubuser/day11
+license: BSD3
+executables:
+  day11-exe:
+    source-dirs: app
+    main: Main.hs
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - memoize
+    - fclabels
+    - mtl
+    - containers
+    - day11
+description: Please see the README on GitHub at <https://github.com/githubuser/day11#readme>

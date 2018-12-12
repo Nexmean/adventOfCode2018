@@ -98,7 +98,7 @@ solve2 points =
       closeToPoints field =
         sum (map (manhattanDistance field) points) < maxTotalDistance
   in  length
-      $ filter closeToPoints [ (i, j) | i <- [0 .. w - 1], j <- [0 .. h - 1] ]
+      $ [ (i, j) | i <- [0 .. w - 1], j <- [0 .. h - 1], closeToPoints (i, j) ]
 
 maxTotalDistance :: Int
 maxTotalDistance = 10000
